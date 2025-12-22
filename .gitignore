@@ -1,0 +1,82 @@
+*.log
+*.log.*
+*.json
+*.xml
+*.csv
+*.sql
+**/.DS_Store
+*.txt
+*.jpg
+*.jpeg
+*.png
+1k_10k*
+res
+*.debug.*
+# ide-config-dirs
+*.code-workspace
+.project_files
+.cursorrules
+# aigc_services
+aigc_routers
+gogochart
+!requirements*.txt
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.backup
+*.bak.py
+# mac
+.DS_Store
+
+# claude code
+CLAUDE.md
+.claude
+.spec-workflow
+# Other
+.vscode
+.kiro
+.trae
+.codebuddy
+.assistant
+**venv
+*.tsv
+*.pt
+gpt*.txt
+# 环境配置文件
+*.env
+*.env_macmini
+*.env_dev
+*.env_prod
+**/.env
+**/.env_macmini
+**/.env_dev
+**/.env_prod
+# 特定目录的环境文件
+browser_smlt/Auto_Utils/.env*
+dev/.env*
+aigc_services/*/.env*
+local/
+local_*
+build/
+*.egg-info/
+.idea
+.venv
+.cursor
+.cursorrules
+cursor/
+node_modules
+
+# Project-specific
+secrets.toml
+*.log
+*/assertion.log
+*results/
+
+
+# 
+uv.lock
+pyproject.toml
+.python-version
+**/profile1/*
+**/node_modules/*
