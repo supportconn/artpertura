@@ -80,7 +80,8 @@ const ARTPERTURA_SCHEMA = {
 
 export async function analyzeArt(base64Image: string): Promise<FullAnalysis> {
   const prompt = `
-    You are an Art Therapy Expert for the ARTPERTURA project developed by GoGoChart for CES 2026. 
+    You are an Art Therapy Expert for the AI&Hope project (formerly Artpertura). 
+    AI&Hope is focused on "Tech connects, care protects".
     Perform a "Qualitative Estimation" of the provided user drawing across 6 dimensions.
     
     IMPORTANT: Provide all analysis in professional, clinical yet accessible English.

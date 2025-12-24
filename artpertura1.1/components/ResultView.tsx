@@ -40,7 +40,7 @@ const ResultView: React.FC<ResultViewProps> = ({ analysis, userImage, onReset })
       <div className="text-center space-y-4">
         <div className="inline-block px-4 py-1 bg-emerald-50 text-emerald-600 rounded-full text-[10px] font-black uppercase tracking-widest mb-2">Analysis Complete</div>
         <h2 className="text-6xl font-black text-slate-900">Qualitative Report</h2>
-        <p className="text-xl text-slate-400 font-medium italic">Estimation Summary #CES-2026-DEMO</p>
+        <p className="text-xl text-slate-400 font-medium italic">AI&Hope Summary #EST-2025-ACTIVE</p>
       </div>
 
       <div className="flex flex-col xl:flex-row gap-16">
@@ -111,11 +111,11 @@ const ResultView: React.FC<ResultViewProps> = ({ analysis, userImage, onReset })
            <div className="p-10 bg-indigo-50 rounded-[3rem] border-2 border-dashed border-indigo-200 text-center space-y-6">
               <h3 className="text-3xl font-black text-indigo-900 tracking-tight">AI Diagnostic Insight</h3>
               <p className="text-lg text-indigo-700 font-medium max-w-2xl mx-auto italic leading-relaxed">
-                "The visual markers identified by GoGoChart's proprietary engine align with clinical markers of 'Social Withdrawal'. These insights are derived from the Qualitative Estimation Framework scheduled for CES 2026."
+                "The visual markers identified by AI&Hope align with clinical markers of emotional withdrawal. Our 'Tech connects, care protects' framework bridges the gap between digital expression and mental wellness."
               </p>
               <div className="flex justify-center gap-4">
-                 <span className="px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg">Elevated Alert</span>
-                 <span className="px-4 py-2 bg-white text-indigo-600 rounded-xl text-xs font-black uppercase tracking-widest border border-indigo-100">Estimation Finalized</span>
+                 <span className="px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg">Actionable Insight</span>
+                 <span className="px-4 py-2 bg-white text-indigo-600 rounded-xl text-xs font-black uppercase tracking-widest border border-indigo-100">AI&Hope Finalized</span>
               </div>
            </div>
         </div>
