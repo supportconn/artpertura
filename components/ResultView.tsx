@@ -17,6 +17,7 @@ interface ResultViewProps {
 }
 
 const ResultView: React.FC<ResultViewProps> = ({ analysis, userImage, onReset }) => {
+  const currentYear = new Date().getFullYear();
   const chartData = [
     { name: 'Texture', value: analysis.textureAndStyle.percentage },
     { name: 'Light', value: analysis.lightAndShadow.percentage },
@@ -40,7 +41,7 @@ const ResultView: React.FC<ResultViewProps> = ({ analysis, userImage, onReset })
       <div className="text-center space-y-4">
         <div className="inline-block px-4 py-1 bg-emerald-50 text-emerald-600 rounded-full text-[10px] font-black uppercase tracking-widest mb-2">Analysis Complete</div>
         <h2 className="text-6xl font-black text-slate-900">Qualitative Report</h2>
-        <p className="text-xl text-slate-400 font-medium italic">AI&Hope Summary #EST-2025-ACTIVE</p>
+        <p className="text-xl text-slate-400 font-medium italic">AI&Hope Summary #EST-{currentYear}-ACTIVE</p>
       </div>
 
       <div className="flex flex-col xl:flex-row gap-16">
@@ -50,13 +51,12 @@ const ResultView: React.FC<ResultViewProps> = ({ analysis, userImage, onReset })
                <span className="w-3 h-3 bg-indigo-500 rounded-full animate-pulse"></span>
                Input Visual
              </h3>
-             <div className="w-full aspect-square bg-slate-50 rounded-2xl flex items-center justify-center p-4">
-                <svg viewBox="0 0 500 500" className="w-full h-full fill-none opacity-80">
-                  <path d="M150,200 Q250,50 350,200 T250,450 T150,200" stroke="#4f46e5" strokeWidth="8" />
-                  <circle cx="200" cy="220" r="15" stroke="#ef4444" strokeWidth="4" />
-                  <circle cx="300" cy="220" r="15" stroke="#ef4444" strokeWidth="4" />
-                  <path d="M180,350 Q250,300 320,350" stroke="#10b981" strokeWidth="6" />
-                </svg>
+             <div className="w-full aspect-square bg-white rounded-2xl flex items-center justify-center p-2 overflow-hidden border border-slate-100 shadow-inner">
+                {userImage && userImage.startsWith('data:image') ? (
+                  <img src={userImage} className="w-full h-full object-contain" alt="User Drawing" />
+                ) : (
+                  <div className="w-full h-full bg-slate-50 flex items-center justify-center text-slate-300">No Image</div>
+                )}
              </div>
            </div>
 
@@ -111,11 +111,11 @@ const ResultView: React.FC<ResultViewProps> = ({ analysis, userImage, onReset })
            <div className="p-10 bg-indigo-50 rounded-[3rem] border-2 border-dashed border-indigo-200 text-center space-y-6">
               <h3 className="text-3xl font-black text-indigo-900 tracking-tight">AI Diagnostic Insight</h3>
               <p className="text-lg text-indigo-700 font-medium max-w-2xl mx-auto italic leading-relaxed">
-                "The visual markers identified by AI&Hope align with clinical markers of emotional withdrawal. Our 'Tech connects, care protects' framework bridges the gap between digital expression and mental wellness."
+                "{analysis.summary}"
               </p>
               <div className="flex justify-center gap-4">
-                 <span className="px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg">Actionable Insight</span>
-                 <span className="px-4 py-2 bg-white text-indigo-600 rounded-xl text-xs font-black uppercase tracking-widest border border-indigo-100">AI&Hope Finalized</span>
+                 <span className="px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg">{analysis.insightTag}</span>
+                 <span className="px-4 py-2 bg-white text-indigo-600 rounded-xl text-xs font-black uppercase tracking-widest border border-indigo-100">AI&Hope Verified</span>
               </div>
            </div>
         </div>

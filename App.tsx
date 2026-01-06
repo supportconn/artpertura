@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
-import { AppState, FullAnalysis, MOCK_ANALYSIS } from './types';
+import { AppState, FullAnalysis, MOCK_ANALYSES } from './types';
 import ResultView from './components/ResultView';
-import SimulatedDemo from './components/SimulatedDemo';
+import DrawingCanvas from './components/DrawingCanvas';
 
 /**
  * AI&Hope Logo
@@ -49,27 +49,35 @@ const GoGoChartLogo = ({ className = "" }: { className?: string }) => (
 const App: React.FC = () => {
   const [gameState, setGameState] = useState<AppState>('landing');
   const [analysis, setAnalysis] = useState<FullAnalysis | null>(null);
+  const [userImage, setUserImage] = useState<string | null>(null);
+  const currentYear = new Date().getFullYear();
 
   const handleJoinWaitlist = () => {
     window.open('https://getwaitlist.com/waitlist/32265', '_blank');
   };
 
   const handleStartDemo = () => {
-    setGameState('simulating');
+    setGameState('drawing');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleSimulationComplete = () => {
+  const handleScanArtwork = (image: string) => {
+    setUserImage(image);
     setGameState('scanning');
+    // Simulate complex AI analysis for the demo
     setTimeout(() => {
-      setAnalysis(MOCK_ANALYSIS);
+      // Pick a random mock analysis for variety
+      const randomIdx = Math.floor(Math.random() * MOCK_ANALYSES.length);
+      setAnalysis(MOCK_ANALYSES[randomIdx]);
       setGameState('result');
-    }, 2500);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 3000);
   };
 
   const handleReset = () => {
     setGameState('landing');
     setAnalysis(null);
+    setUserImage(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -108,7 +116,7 @@ const App: React.FC = () => {
               <div className="max-w-7xl mx-auto text-center space-y-8 relative z-10">
                 <div className="inline-flex items-center gap-3 px-5 py-2 bg-slate-900 text-white rounded-full text-[10px] font-black uppercase tracking-[0.3em] mb-4 shadow-xl">
                   <span className="w-2 h-2 bg-pink-400 rounded-full animate-pulse"></span>
-                  The First AI Ecosystem for Mental Resilience
+                  The First AI Ecosystem for Mental Resilience in {currentYear}
                 </div>
                 <h1 className="text-6xl md:text-[8.5rem] font-black leading-[0.85] tracking-tight text-slate-900">
                   Hope <br />
@@ -129,7 +137,7 @@ const App: React.FC = () => {
                     onClick={handleStartDemo}
                     className="px-12 py-7 bg-white text-slate-900 font-black text-xl rounded-[2.5rem] border-2 border-slate-200 hover:border-slate-900 transition-all uppercase tracking-tighter"
                   >
-                    Try the Demo
+                    Try the Canvas Demo
                   </button>
                 </div>
               </div>
@@ -137,7 +145,7 @@ const App: React.FC = () => {
               <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-indigo-100/20 rounded-full blur-[100px] -z-10"></div>
             </section>
 
-            {/* Workflow Section (from PDF page 1) */}
+            {/* Workflow Section */}
             <section id="workflow" className="py-24 bg-white">
               <div className="max-w-7xl mx-auto px-6">
                 <div className="text-center mb-16 space-y-4">
@@ -167,7 +175,7 @@ const App: React.FC = () => {
               </div>
             </section>
 
-            {/* Vision Section (page 1/2) */}
+            {/* Vision Section */}
             <section id="vision" className="py-20 bg-slate-50 border-y border-slate-100">
               <div className="max-w-7xl mx-auto px-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
@@ -200,7 +208,7 @@ const App: React.FC = () => {
               </div>
             </section>
 
-            {/* Tech Pillars (page 2) */}
+            {/* Tech Pillars */}
             <section id="tech" className="py-24 bg-white">
               <div className="max-w-7xl mx-auto px-6">
                 <div className="text-center mb-16 space-y-4">
@@ -237,23 +245,38 @@ const App: React.FC = () => {
           </div>
         )}
 
-        {gameState === 'simulating' && (
-          <div className="max-w-4xl mx-auto px-6 py-12">
-            <SimulatedDemo onComplete={handleSimulationComplete} />
+        {gameState === 'drawing' && (
+          <div className="max-w-7xl mx-auto px-6 py-12">
+            <DrawingCanvas onScan={handleScanArtwork} onCancel={handleReset} />
           </div>
         )}
 
         {gameState === 'scanning' && (
           <div className="max-w-4xl mx-auto py-24 text-center space-y-8">
-            <AIHopeLogo className="w-48 h-48 mx-auto animate-bounce" />
+            <div className="relative w-48 h-48 mx-auto">
+               <AIHopeLogo className="w-48 h-48 animate-pulse" />
+               <div className="absolute inset-0 border-4 border-indigo-600 rounded-full animate-ping opacity-20"></div>
+            </div>
             <h2 className="text-3xl font-black text-slate-900 animate-pulse tracking-tight uppercase italic">Capturing Subconscious Patterns...</h2>
-            <p className="text-slate-400 font-bold text-sm tracking-widest uppercase">Applying Qualitative Estimation Matrix</p>
+            <div className="flex flex-col gap-2">
+              <p className="text-slate-400 font-bold text-sm tracking-widest uppercase">Applying Qualitative Estimation Matrix</p>
+              <div className="w-64 h-2 bg-slate-100 mx-auto rounded-full overflow-hidden">
+                <div className="h-full bg-indigo-600 animate-[loading_3s_ease-in-out_infinite]"></div>
+              </div>
+            </div>
+            <style>{`
+              @keyframes loading {
+                0% { width: 0% }
+                50% { width: 70% }
+                100% { width: 100% }
+              }
+            `}</style>
           </div>
         )}
 
         {gameState === 'result' && analysis && (
           <div className="max-w-7xl mx-auto px-6 py-12">
-            <ResultView analysis={analysis} userImage="DEMO_VISUAL" onReset={handleReset} />
+            <ResultView analysis={analysis} userImage={userImage || ''} onReset={handleReset} />
           </div>
         )}
       </main>
@@ -266,23 +289,23 @@ const App: React.FC = () => {
                 <a href="https://gogochart.com/" target="_blank" rel="noopener noreferrer" className="block hover:opacity-80 transition-opacity">
                   <GoGoChartLogo />
                 </a>
-                <p className="text-xs text-slate-500 font-medium leading-relaxed">
+                <p className="text-sm text-slate-500 font-medium leading-relaxed">
                    AI&Hope is an empathetic technology initiative by GoGoChart. "Tech connects, care protects."
                 </p>
              </div>
              <div className="grid grid-cols-2 gap-20">
                 <div className="space-y-6">
-                  <h5 className="text-[9px] font-black text-pink-500 uppercase tracking-widest">Resources</h5>
+                  <h5 className="text-xs font-black text-pink-500 uppercase tracking-widest">Resources</h5>
                   <ul className="space-y-3">
-                    <li><a href="https://gogochart.com/solutions/" target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-slate-400 hover:text-white transition-colors">Support Hub</a></li>
-                    <li><a href="https://gogochart.com/case-studies/" target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-slate-400 hover:text-white transition-colors">Clinical Research</a></li>
+                    <li><a href="https://gogochart.com/solutions/" target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-slate-400 hover:text-white transition-colors">Support Hub</a></li>
+                    <li><a href="https://gogochart.com/case-studies/" target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-slate-400 hover:text-white transition-colors">Clinical Research</a></li>
                   </ul>
                 </div>
                 <div className="space-y-6">
-                  <h5 className="text-[9px] font-black text-pink-500 uppercase tracking-widest">Connect</h5>
+                  <h5 className="text-xs font-black text-pink-500 uppercase tracking-widest">Connect</h5>
                   <ul className="space-y-3">
-                    <li><a href="https://gogochart.com/contact-us/" target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-slate-400 hover:text-white transition-colors">Contact Care Team</a></li>
-                    <li><a href="https://gogochart.com/about-us/" target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-slate-400 hover:text-white transition-colors">About Us</a></li>
+                    <li><a href="https://gogochart.com/contact-us/" target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-slate-400 hover:text-white transition-colors">Contact Care Team</a></li>
+                    <li><a href="https://gogochart.com/about-us/" target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-slate-400 hover:text-white transition-colors">About Us</a></li>
                   </ul>
                 </div>
              </div>
@@ -290,9 +313,9 @@ const App: React.FC = () => {
           <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-3">
                <AIHopeLogo className="w-12 h-12 opacity-40 grayscale" />
-               <p className="text-[9px] text-slate-600 font-bold uppercase tracking-[0.15em]">© 2025 AI&Hope. Powered by GoGoChart Technology Limited.</p>
+               <p className="text-xs text-slate-600 font-bold uppercase tracking-[0.15em]">© {currentYear} AI&Hope. Powered by GoGoChart Technology Limited.</p>
             </div>
-            <p className="text-[8px] text-slate-700 max-w-sm text-center md:text-right leading-relaxed">
+            <p className="text-[11px] text-slate-700 max-w-sm text-center md:text-right leading-relaxed font-medium">
               AI&Hope is a qualitative indicator for art therapy purposes. It is not a clinical replacement. If you are in crisis, seek professional help immediately.
             </p>
           </div>
