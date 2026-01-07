@@ -54,7 +54,10 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ onScan, onCancel }) => {
     contextRef.current?.beginPath();
     contextRef.current?.moveTo(coords.x, coords.y);
     setIsDrawing(true);
-    e.preventDefault();
+    
+    if (e.cancelable) {
+      e.preventDefault();
+    }
   };
 
   const draw = (e: React.MouseEvent | React.TouchEvent) => {
@@ -62,7 +65,10 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ onScan, onCancel }) => {
     const coords = getCoordinates(e);
     contextRef.current?.lineTo(coords.x, coords.y);
     contextRef.current?.stroke();
-    e.preventDefault();
+    
+    if (e.cancelable) {
+      e.preventDefault();
+    }
   };
 
   const stopDrawing = () => {
@@ -73,15 +79,35 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ onScan, onCancel }) => {
   const getCoordinates = (e: any) => {
     const canvas = canvasRef.current!;
     const rect = canvas.getBoundingClientRect();
-    if (e.touches) {
+    
+    // Handle touch events
+    if (e.touches && e.touches.length > 0) {
       return {
         x: e.touches[0].clientX - rect.left,
         y: e.touches[0].clientY - rect.top,
       };
     }
+    
+    // Handle changed touches for end events
+    if (e.changedTouches && e.changedTouches.length > 0) {
+      return {
+        x: e.changedTouches[0].clientX - rect.left,
+        y: e.changedTouches[0].clientY - rect.top,
+      };
+    }
+
+    // Handle mouse events using offsetX/Y if available
+    if (e.nativeEvent && e.nativeEvent.offsetX !== undefined) {
+      return {
+        x: e.nativeEvent.offsetX,
+        y: e.nativeEvent.offsetY,
+      };
+    }
+
+    // Fallback coordinate calculation
     return {
-      x: e.nativeEvent.offsetX,
-      y: e.nativeEvent.offsetY,
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
     };
   };
 
@@ -142,6 +168,7 @@ const DrawingCanvas: React.FC<DrawingCanvasProps> = ({ onScan, onCancel }) => {
           onTouchStart={startDrawing}
           onTouchMove={draw}
           onTouchEnd={stopDrawing}
+          style={{ touchAction: 'none' }}
           className="w-full h-full block"
         />
         <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
